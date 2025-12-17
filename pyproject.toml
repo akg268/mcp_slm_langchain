@@ -10,4 +10,6 @@ dependencies = [
     "langchain>=1.2.0",
     "langchain-mcp-adapters>=0.2.1",
     "langchain-ollama>=1.0.1",
+    "langchain-openai>=1.1.4",
+    "pygithub>=2.8.1",
 ]

@@ -1,9 +1,12 @@
 from fastmcp import FastMCP
 import random
+from github import Github
 from ghdata import GhData
+
+
+
 mcp = FastMCP("myorg-mcp-server")
 
-@mcp.tool(description= "Get a developer available to assign on an issue")
 async def assign_developer(category: str) -> str:
     """Get a developer available to assign on an issue"""
     dev_list = ["Dev1", "Dev2","Dev4", "Dev5"]
@@ -11,7 +14,6 @@ async def assign_developer(category: str) -> str:
         return "Dev3"
     return random.choice(dev_list)
 
-@mcp.tool(description= "Find issue category")
 async def find_issue_category(issue_desc:str) -> str:
     """Find the issue category"""
     if "infra" in issue_desc.lower():
@@ -33,14 +35,23 @@ async def find_issue_category(issue_desc:str) -> str:
 @mcp.tool(description="create a github issue")
 async def create_github_issue(
     title: str,
-    issue_desc: str,
-    category: str,
-    assigned_to: str):
+    issue_desc: str) -> str:
     """create github issue
     returns the issue id"""
-
-    print(f"Issue created {title}::{issue_desc}::{category}::{assigned_to}")
-    return random.randrange(1,10000)
+    category = await find_issue_category(issue_desc)
+    assigned_dev =await assign_developer(category)
+    ##############
+    ## uncomment if you want the real GH call
+    ##############
+    #YOUR_TOKEN = "github_" 
+    #REPO_PATH = "owner/repo"
+    #gh = Github(YOUR_TOKEN)
+    #repo = gh.get_repo(REPO_PATH)
+    #issue = repo.create_issue(title=title, body=issue_desc,assignee=assigned_dev,labels=[category])
+    #print(f"Issue has been created::{issue.number} :: title : {issue.title}")
+    issue_id = random.randrange(1,10000)
+    print(f"Issue created title {title}:: description: {issue_desc}:: category: {category}:Assigned to: {assigned_dev}")
+    return f"Issue created title {title}:: description: {issue_desc}:: category: {category}:Assigned to: {assigned_dev}"
 
 if __name__ == "__main__":
     mcp.run(transport="http")
