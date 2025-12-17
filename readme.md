@@ -18,8 +18,11 @@
 - Demonstrate the tools , mcp clients and mcp servers
 
 ## Models used
-- Gemma3:270m use for categorization 
-- gpt-4.1-nano used for github issue creation template with some documents to refer about the issue 
+- Gemma3:3B SLM use for categorization 
+- gpt-4.1-mini use this if you don't have local model
+
+# Note:
+It was ideal to use a smaller Gemma3:270M model but it doesn't have tool calling capability
 
 ### MCP 
 
